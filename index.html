@@ -10,17 +10,12 @@
 
     <meta
         name="theme-color"
-        content="#0b0d12"
+        content="#160f22"
     >
-
-    <link
-        rel="stylesheet"
-        href="styles.css"
-    >
-
-    <title>Horario</title>
+<title>Horario</title>
 
     <style>
+
         :root {
             color-scheme: dark;
 
@@ -32,18 +27,36 @@
             --text: #f5efff;
             --muted: #b9a8cc;
             --accent: #c59cff;
+            --card: rgba(118, 92, 168, 0.22);
+            --card-border: rgba(197, 156, 255, 0.16);
         }
 
         * {
             box-sizing: border-box;
         }
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
+        html {
             width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
             background: var(--background);
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            margin: 0;
+            padding: 3px;
+            overflow: hidden;
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(112, 75, 157, 0.18),
+                    transparent 42%
+                ),
+                var(--background);
             color: var(--text);
             font-family:
                 -apple-system,
@@ -54,36 +67,63 @@
                 sans-serif;
         }
 
-        body {
-            padding:
-                max(4px, env(safe-area-inset-top))
-                max(4px, env(safe-area-inset-right))
-                max(4px, env(safe-area-inset-bottom))
-                max(4px, env(safe-area-inset-left));
-        }
-
         .schedule {
             width: 100%;
+            height: 100%;
             overflow: hidden;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 20px;
             background: var(--surface);
         }
 
+        /*
+         * La tabla se comporta como una cuadrícula:
+         * una fila para el encabezado y seis filas iguales para los bloques.
+         * Así ocupa toda la altura disponible del widget.
+         */
         table {
+            display: grid;
+            grid-template-rows: 30px minmax(0, 1fr);
             width: 100%;
+            height: 100%;
             border-collapse: collapse;
             table-layout: fixed;
         }
 
+        thead,
+        tbody {
+            display: grid;
+            min-width: 0;
+            min-height: 0;
+        }
+
+        thead {
+            grid-template-rows: minmax(0, 1fr);
+        }
+
+        tbody {
+            grid-template-rows: repeat(6, minmax(0, 1fr));
+        }
+
+        tr {
+            display: grid;
+            grid-template-columns: 17% repeat(5, minmax(0, 1fr));
+            min-width: 0;
+            min-height: 0;
+        }
+
         th,
         td {
-            padding: 3px 2px;
+            display: flex;
+            min-width: 0;
+            min-height: 0;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
             border-right: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
             text-align: center;
             vertical-align: middle;
-            overflow-wrap: anywhere;
         }
 
         th:last-child,
@@ -96,109 +136,123 @@
         }
 
         th {
-            height: 24px;
-            padding: 4px 1px;
+            padding: 2px 1px;
             background: var(--surface-light);
             color: var(--muted);
-            font-size: 9px;
-            font-weight: 700;
+            font-size: clamp(8px, 2.35vw, 10px);
+            font-weight: 750;
+            letter-spacing: 0.08em;
+            line-height: 1;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
         }
 
-        th:first-child,
-        td:first-child {
-            width: 18%;
-        }
-
-        th:not(:first-child),
-        td:not(:first-child) {
-            width: 16.4%;
+        td {
+            padding: 3px 2px;
         }
 
         .block {
+            flex-direction: column;
+            gap: 3px;
+            padding: 2px 1px;
             background: rgba(255, 255, 255, 0.025);
         }
 
         .block-number {
             display: block;
             color: var(--text);
-            font-size: 9px;
-            font-weight: 700;
-            line-height: 1.1;
+            font-size: clamp(9px, 2.6vw, 11px);
+            font-weight: 750;
+            line-height: 1;
+            white-space: nowrap;
         }
 
         .block-time {
             display: block;
-            margin-top: 2px;
             color: var(--muted);
-            font-size: 7px;
-            line-height: 1.1;
+            font-size: clamp(6.5px, 1.9vw, 8px);
+            font-weight: 500;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .class,
+        .empty {
+            width: 100%;
+            height: 100%;
+            min-width: 0;
+            min-height: 0;
         }
 
         .class {
-            min-height: 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
             padding: 3px 1px;
-            border-radius: 5px;
-            background: rgba(125, 183, 255, 0.1);
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            border-radius: 7px;
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(197, 156, 255, 0.10),
+                    transparent 70%
+                ),
+                var(--card);
+            box-shadow:
+                0 1px 3px rgba(0, 0, 0, 0.18),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .class-name,
+        .class-room,
+        .class-time {
+            display: block;
+            max-width: 100%;
+            overflow: hidden;
+            line-height: 1;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .class-name {
-            display: block;
             color: var(--accent);
-            font-size: 8px;
-            font-weight: 700;
-            line-height: 1.15;
+            font-size: clamp(8px, 2.35vw, 10px);
+            font-weight: 750;
         }
 
         .class-room {
-            display: block;
-            margin-top: 2px;
             color: var(--text);
-            font-size: 7px;
-            line-height: 1.1;
+            font-size: clamp(6.5px, 1.95vw, 8px);
+            font-weight: 550;
         }
 
         .class-time {
-            display: block;
-            margin-top: 2px;
             color: var(--muted);
-            font-size: 6.5px;
-            line-height: 1.1;
+            font-size: clamp(6px, 1.75vw, 7.5px);
+            font-weight: 500;
         }
 
-        .empty {
-            min-height: 35px;
-        }
-
-        @media (max-width: 350px) {
-            th {
-                font-size: 8px;
+        @media (max-height: 280px) {
+            table {
+                grid-template-rows: 25px minmax(0, 1fr);
             }
 
-            .block-number {
-                font-size: 8px;
+            td {
+                padding: 2px 1px;
             }
 
-            .block-time,
-            .class-room {
-                font-size: 6.5px;
-            }
-
-            .class-name {
-                font-size: 7.5px;
+            .class,
+            .block {
+                gap: 2px;
             }
 
             .class-time {
-                font-size: 6px;
-            }
-
-            th,
-            td {
-                padding-left: 1px;
-                padding-right: 1px;
+                display: none;
             }
         }
+
     </style>
 </head>
 
