@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0d12"
+    >
+
+    <link
+        rel="stylesheet"
+        href="styles.css"
+    >
+
+    <title>Horario</title>
+
+    <style>
+        :root {
+            color-scheme: dark;
+
+            --background: #160f22;
+            --surface: #21152f;
+            --surface-light: #2d1d40;
+            --border: #4a3561;
+
+            --text: #f5efff;
+            --muted: #b9a8cc;
+            --accent: #c59cff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background: var(--background);
+            color: var(--text);
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "SF Pro Display",
+                "SF Pro Text",
+                Arial,
+                sans-serif;
+        }
+
+        body {
+            padding:
+                max(4px, env(safe-area-inset-top))
+                max(4px, env(safe-area-inset-right))
+                max(4px, env(safe-area-inset-bottom))
+                max(4px, env(safe-area-inset-left));
+        }
+
+        .schedule {
+            width: 100%;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th,
+        td {
+            padding: 3px 2px;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+            vertical-align: middle;
+            overflow-wrap: anywhere;
+        }
+
+        th:last-child,
+        td:last-child {
+            border-right: 0;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        th {
+            height: 24px;
+            padding: 4px 1px;
+            background: var(--surface-light);
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        th:first-child,
+        td:first-child {
+            width: 18%;
+        }
+
+        th:not(:first-child),
+        td:not(:first-child) {
+            width: 16.4%;
+        }
+
+        .block {
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        .block-number {
+            display: block;
+            color: var(--text);
+            font-size: 9px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .block-time {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 7px;
+            line-height: 1.1;
+        }
+
+        .class {
+            min-height: 35px;
+            padding: 3px 1px;
+            border-radius: 5px;
+            background: rgba(125, 183, 255, 0.1);
+        }
+
+        .class-name {
+            display: block;
+            color: var(--accent);
+            font-size: 8px;
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .class-room {
+            display: block;
+            margin-top: 2px;
+            color: var(--text);
+            font-size: 7px;
+            line-height: 1.1;
+        }
+
+        .class-time {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 6.5px;
+            line-height: 1.1;
+        }
+
+        .empty {
+            min-height: 35px;
+        }
+
+        @media (max-width: 350px) {
+            th {
+                font-size: 8px;
+            }
+
+            .block-number {
+                font-size: 8px;
+            }
+
+            .block-time,
+            .class-room {
+                font-size: 6.5px;
+            }
+
+            .class-name {
+                font-size: 7.5px;
+            }
+
+            .class-time {
+                font-size: 6px;
+            }
+
+            th,
+            td {
+                padding-left: 1px;
+                padding-right: 1px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="schedule">
+        <table aria-label="Horario semanal">
+            <thead>
+                <tr>
+                    <th>Bloque</th>
+                    <th>Lun</th>
+                    <th>Mar</th>
+                    <th>Mié</th>
+                    <th>Jue</th>
+                    <th>Vie</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td class="block">
+                        <span class="block-number">1–2</span>
+                        <span class="block-time">8:15–9:25</span>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Est. Desc.</span>
+                            <span class="class-room">P300 · SALS</span>
+                            <span class="class-time">8:15–9:25</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">EFI</span>
+                            <span class="class-room">P303 · F102</span>
+                            <span class="class-time">8:15–9:25</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Big Data</span>
+                            <span class="class-room">P300 · G208</span>
+                            <span class="class-time">8:50–9:25</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="block">
+                        <span class="block-number">3–4</span>
+                        <span class="block-time">9:40–10:50</span>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Mat. Apl.</span>
+                            <span class="class-room">P317 · R101</span>
+                            <span class="class-time">9:40–10:50</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Big Data</span>
+                            <span class="class-room">P300 · G208</span>
+                            <span class="class-time">9:40–10:50</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="block">
+                        <span class="block-number">5–6</span>
+                        <span class="block-time">11:05–12:15</span>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Progra</span>
+                            <span class="class-room">P300 · U240</span>
+                            <span class="class-time">11:05–12:15</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Mat. Apl.</span>
+                            <span class="class-room">P317 · R101</span>
+                            <span class="class-time">11:05–12:15</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Est. Desc.</span>
+                            <span class="class-room">P300 · SALS</span>
+                            <span class="class-time">11:05–12:15</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="block">
+                        <span class="block-number">7–8</span>
+                        <span class="block-time">12:30–13:40</span>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Progra</span>
+                            <span class="class-room">P300 · U240</span>
+                            <span class="class-time">12:30–13:40</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="block">
+                        <span class="block-number">9–10</span>
+                        <span class="block-time">14:40–15:50</span>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Prepro</span>
+                            <span class="class-room">P300 · G208</span>
+                            <span class="class-time">14:40–15:50</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Mat. Apl.</span>
+                            <span class="class-room">P317 · R101</span>
+                            <span class="class-time">14:40–15:50</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="block">
+                        <span class="block-number">11–12</span>
+                        <span class="block-time">16:05–17:15</span>
+                    </td>
+
+                    <td>
+                        <div class="class">
+                            <span class="class-name">Prepro</span>
+                            <span class="class-room">P300 · G208</span>
+                            <span class="class-time">16:05–17:15</span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+
+                    <td>
+                        <div class="empty"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
