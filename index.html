@@ -10,25 +10,42 @@
 
     <meta
         name="theme-color"
-        content="#160f22"
+        content="#08090d"
     >
 <title>Horario</title>
 
     <style>
 
+        /*
+         * ==========================================================
+         * TEMA
+         * Para cambiar toda la paleta, modifica solamente este bloque.
+         * ==========================================================
+         */
         :root {
             color-scheme: dark;
 
-            --background: #160f22;
-            --surface: #21152f;
-            --surface-light: #2d1d40;
-            --border: #4a3561;
+            /* Fondos */
+            --background: #08090d;
+            --surface: #11131a;
+            --surface-light: #191c25;
+            --block-background: var(--block-background);
 
-            --text: #f5efff;
-            --muted: #b9a8cc;
-            --accent: #c59cff;
-            --card: rgba(118, 92, 168, 0.22);
-            --card-border: rgba(197, 156, 255, 0.16);
+            /* Bordes y tarjetas */
+            --border: #303543;
+            --card: #171a24;
+            --card-border: #353b4a;
+            --card-highlight: rgba(183, 156, 255, 0.10);
+
+            /* Textos */
+            --text: #f6f7fb;
+            --muted: #a4aabc;
+            --accent: #b79cff;
+
+            /* Efectos */
+            --body-glow: rgba(105, 78, 171, 0.16);
+            --shadow: rgba(0, 0, 0, 0.28);
+            --inner-highlight: var(--inner-highlight);
         }
 
         * {
@@ -53,7 +70,7 @@
             background:
                 radial-gradient(
                     circle at top,
-                    rgba(112, 75, 157, 0.18),
+                    var(--body-glow),
                     transparent 42%
                 ),
                 var(--background);
@@ -154,7 +171,7 @@
             flex-direction: column;
             gap: 3px;
             padding: 2px 1px;
-            background: rgba(255, 255, 255, 0.025);
+            background: var(--block-background);
         }
 
         .block-number {
@@ -196,13 +213,13 @@
             background:
                 linear-gradient(
                     145deg,
-                    rgba(197, 156, 255, 0.10),
+                    var(--card-highlight),
                     transparent 70%
                 ),
                 var(--card);
             box-shadow:
-                0 1px 3px rgba(0, 0, 0, 0.18),
-                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+                0 1px 3px var(--shadow),
+                inset 0 1px 0 var(--inner-highlight);
         }
 
         .class-name,
@@ -263,6 +280,24 @@
         }
 
     </style>
+    <script>
+        /*
+         * Mantiene el color de Safari sincronizado con --background.
+         * No es necesario editar el meta theme-color al cambiar la paleta.
+         */
+        document.addEventListener("DOMContentLoaded", () => {
+            const background = getComputedStyle(document.documentElement)
+                .getPropertyValue("--background")
+                .trim();
+
+            const themeColor = document.querySelector('meta[name="theme-color"]');
+
+            if (themeColor && background) {
+                themeColor.setAttribute("content", background);
+            }
+        });
+    </script>
+
 </head>
 
 <body>
